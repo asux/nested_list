@@ -9,5 +9,49 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
+}
+
+html, body {
+  height: 100%;
+}
+body {
+  /* background: #333; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font-family: Helvetica Neue; */
+  font-size: 13pt;
+}
+h1 {
+  font-size: 2em;
+  color: #eee;
+  display: inline-block;
+}
+a {
+  color: white;
+}
+p {
+  margin-top: 1em;
+  text-align: center;
+  color: #aaa;
+}
+
+ul {
+  align-items: left;
+  text-align: left;
+}
+
+li {
+  list-style: none;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+li span {
+  margin-right: 1em;
+}
+
+li input {
+  margin-right: 1em;
 }
