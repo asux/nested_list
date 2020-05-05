@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { cloneDeep, sortBy } from "lodash";
 
-function List(props) {
+export function generateId() {
+  return new Date().getTime();
+}
+
+export default function List(props) {
   const [items, setItems] = useState(props.items || []);
   const [newItemText, setNewItemText] = useState("");
 
@@ -11,10 +15,6 @@ function List(props) {
   const last = props.position === props.lastPosition;
 
   let sublistButton;
-
-  function generateId() {
-    return new Date().getTime();
-  }
 
   function handleMoveUp(itemId) {
     return (e) => {
@@ -141,10 +141,8 @@ List.propTypes = {
   items: PropTypes.array,
   position: PropTypes.number.isRequired,
   lastPosition: PropTypes.number,
-  id: PropTypes.string,
+  id: PropTypes.number,
   handleMoveUp: PropTypes.func,
   handleDownUp: PropTypes.func,
   handleRemove: PropTypes.func,
 };
-
-export default List;

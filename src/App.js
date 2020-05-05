@@ -1,5 +1,5 @@
 import React from 'react';
-import List from './components/List'
+import List, {generateId} from './components/List'
 import './App.css';
 
 // const TestItems = [
@@ -16,7 +16,7 @@ function App() {
     <div className="App">
       <h2>A Nested List Editor</h2>
       <div>
-        <List position={0}/>
+        <List position={0} id={generateId()} />
       </div>
     </div>
   );
