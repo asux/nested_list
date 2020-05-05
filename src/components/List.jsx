@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { cloneDeep, sortBy } from "lodash";
 
 function List(props) {
-  const [items, setItems] = useState(props.items);
+  const [items, setItems] = useState(props.items || []);
   const [newItemText, setNewItemText] = useState("");
 
   const root = props.position === 0;
@@ -11,6 +11,10 @@ function List(props) {
   const last = props.position === props.lastPosition;
 
   let sublistButton;
+
+  function generateId() {
+    return new Date().getTime();
+  }
 
   function handleMoveUp(itemId) {
     return (e) => {
@@ -36,6 +40,7 @@ function List(props) {
 
       let newItems = cloneDeep(items);
       let current = newItems.find((i) => i.id === itemId);
+      console.debug(newItems, current);
       let next = newItems.find((i) => i.position === current.position + 1);
       current.position += 1;
       current.lastPosition = newItems.length + 1;
@@ -50,7 +55,7 @@ function List(props) {
 
   function handleAddItems(e) {
     e.preventDefault();
-    setItems([{ id: new Date(), position: 0 }]);
+    setItems([{ id: generateId(), position: 0 }]);
   }
 
   function handleRemoveItems(e) {
@@ -63,12 +68,12 @@ function List(props) {
 
     let newItems = cloneDeep(items);
     newItems.push({
-      id: new Date(),
+      id: generateId(),
       position: newItems.length + 1,
       text: newItemText,
     });
-    console.debug(newItems);
     setItems(newItems);
+    setNewItemText("");
   }
 
   function handleRemove(itemId) {
@@ -96,9 +101,10 @@ function List(props) {
   return (
     <>
       {root || controls}
-      {items && items.length > 0 && (
-        <ul>
-          {items.map((item, index, list) => (
+      <ul>
+        {items &&
+          items.length > 0 &&
+          items.map((item, index, list) => (
             <li>
               <List
                 text={item.text}
@@ -112,6 +118,7 @@ function List(props) {
               />
             </li>
           ))}
+        {root && (
           <li>
             <form onSubmit={handleSubmit}>
               <input
@@ -123,8 +130,8 @@ function List(props) {
               <button type="submit">Add</button>
             </form>
           </li>
-        </ul>
-      )}
+        )}
+      </ul>
     </>
   );
 }
