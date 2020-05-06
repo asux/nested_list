@@ -1,17 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ListItem from "./ListItem";
-import { generateId } from "./utils";
-
-function compareByPosition(a, b) {
-  if (a.position < b.position) {
-    return -1;
-  }
-  if (a.position > b.position) {
-    return 1;
-  }
-  return 0;
-}
+import { generateId, compareByPosition } from "./utils";
 
 export default function List(props) {
   const [items, setItems] = useState(props.items || []);
