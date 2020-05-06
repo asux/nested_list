@@ -1,6 +1,6 @@
 import React from 'react';
-import List, {generateId} from './components/List'
 import './App.css';
+import List from './List'
 
 // const TestItems = [
 //   { id: 1, text: 'Coffee', position: 1 },
@@ -16,7 +16,7 @@ function App() {
     <div className="App">
       <h2>A Nested List Editor</h2>
       <div>
-        <List position={0} id={generateId()} />
+        <List/>
       </div>
     </div>
   );
