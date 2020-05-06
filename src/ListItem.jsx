@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import List from "./List";
 
-export default function ListItem(props) {
-  const [item, setItem] = useState(props.item);
+export default function ListItem({item, lastPosition, handleMoveUp, handleMoveDown, handleRemove}) {
+  const [currentItem, setCurrentItem] = useState(item);
   const first = item.position === 1;
-  const last = item.position === props.lastPosition;
+  const last = item.position === lastPosition;
   let sublistButton;
 
   const [hasSublist, setHasSublist] = useState(
-    item.items && item.items.length > 0
+    currentItem.items && currentItem.items.length > 0
   );
 
   function handleAddItems(e) {
@@ -24,12 +24,12 @@ export default function ListItem(props) {
 
   function pushToParent(newItem) {
     console.log("pushToParent", newItem);
-    const itemClone = { ...item };
+    const itemClone = { ...currentItem };
     const items = itemClone.items || [];
     items.push(newItem);
     itemClone.items = items;
     console.debug(itemClone);
-    setItem(itemClone);
+    setCurrentItem(itemClone);
   }
 
   if (hasSublist) {
@@ -40,11 +40,11 @@ export default function ListItem(props) {
 
   return (
     <>
-      <span>{item.text}</span>
-      {first || <button onClick={props.handleMoveUp}>&uarr;</button>}
-      {last || <button onClick={props.handleMoveDown}>&darr;</button>}
+      <span>{currentItem.text}</span>
+      {first || <button onClick={handleMoveUp}>&uarr;</button>}
+      {last || <button onClick={handleMoveDown}>&darr;</button>}
       {sublistButton}
-      <button onClick={props.handleRemove}>Remove</button>
+      <button onClick={handleRemove}>Remove</button>
       {hasSublist && <List items={item.items} pushToParent={pushToParent} />}
     </>
   );

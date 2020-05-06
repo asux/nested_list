@@ -3,15 +3,15 @@ import PropTypes from "prop-types";
 import ListItem from "./ListItem";
 import { generateId, compareByPosition } from "./utils";
 
-export default function List(props) {
-  const [items, setItems] = useState(props.items || []);
+export default function List({items, pushToParent}) {
+  const [currentItems, setCurrentItems] = useState(items || []);
   const [newItemText, setNewItemText] = useState("");
 
   function handleMoveUp(itemId) {
     return (e) => {
       e.preventDefault();
 
-      let newItems = [...items];
+      let newItems = [...currentItems];
       let current = newItems.find((i) => i.id === itemId);
       let prev = newItems.find((i) => i.position === current.position - 1);
       current.position -= 1;
@@ -21,7 +21,7 @@ export default function List(props) {
         prev.lastPosition = newItems.length + 1;
       }
       newItems = newItems.sort(compareByPosition);
-      setItems(newItems);
+      setCurrentItems(newItems);
     };
   }
 
@@ -29,8 +29,8 @@ export default function List(props) {
     return (e) => {
       e.preventDefault();
 
-      let newItems = [...items];
-      console.debug("copied items:", newItems);
+      let newItems = [...currentItems];
+      console.debug("copied currentItems:", newItems);
       let current = newItems.find((i) => i.id === itemId);
       let next = newItems.find((i) => i.position === current.position + 1);
       current.position += 1;
@@ -40,34 +40,34 @@ export default function List(props) {
         next.lastPosition = newItems.length + 1;
       }
       newItems = newItems.sort(compareByPosition);
-      setItems(newItems);
+      setCurrentItems(newItems);
     };
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    let newItems = [...items];
+    let newItems = [...currentItems];
     const newItem = {
       id: generateId(),
       position: newItems.length + 1,
       text: newItemText,
     };
     newItems.push(newItem);
-    props.pushToParent && props.pushToParent(newItem);
-    setItems(newItems);
+    pushToParent && pushToParent(newItem);
+    setCurrentItems(newItems);
     setNewItemText("");
   }
 
   function handleRemove(itemId) {
     return (e) => {
-      setItems(items.filter((item) => item.id !== itemId));
+      setCurrentItems(currentItems.filter((item) => item.id !== itemId));
     };
   }
 
   return (
     <ul>
-      {items.map((item, index, list) => (
+      {currentItems.map((item, index, list) => (
         <li>
           <ListItem
             key={item.id}
@@ -95,6 +95,6 @@ export default function List(props) {
 }
 
 List.propTypes = {
-  items: PropTypes.array,
+  currentItems: PropTypes.array,
   pushToParent: PropTypes.func,
 };
